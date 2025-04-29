@@ -3,16 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Auth;
 
+// Redirecionar a raiz para o dashboard se autenticado, senão login
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
+    // Painel principal
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        return redirect()->route('tasks.index');
+    })->middleware(['auth', 'verified'])->name('dashboard');;
 
     // CRUD de tarefas
     Route::resource('tasks', TaskController::class);
