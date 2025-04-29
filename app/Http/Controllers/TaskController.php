@@ -9,11 +9,20 @@ use Illuminate\Support\Facades\Auth;
 class TaskController extends Controller
 {
     // Listar tarefas do usuário logado
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Auth::user()->tasks()->latest()->paginate(5);
+        $query = auth()->user()->tasks();
+    
+        if ($request->filled('status') && $request->status !== 'Todas') {
+            $query->where('status', $request->status);
+        }
+    
+        $tasks = $query->orderByDesc('created_at')->paginate(5)->withQueryString();
+    
         return view('tasks.index', compact('tasks'));
     }
+
+
 
     // Mostrar formulário de criação
     public function create()
