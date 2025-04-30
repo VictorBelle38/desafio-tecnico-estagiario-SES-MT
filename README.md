@@ -57,7 +57,6 @@ php artisan serve
 👨‍💻 Autor
 Victor Bellé
 Estudante de Engenharia da Computação
-GitHub
 
 📄 Licença
 Este projeto está sob a licença MIT.
